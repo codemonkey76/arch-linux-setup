@@ -12,7 +12,7 @@ update_system() {
 
 install_pacman_packages() {
 	echo "Installing packages from official repositories..."
-	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow
+	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf
 }
 
 install_yay() {
