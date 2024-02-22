@@ -16,7 +16,7 @@ install_pacman_packages() {
 
 install_yay() {
 	echo "Installing yay for AUR support..."
- 	cd ~
+	cd ~
 	git clone https://aur.archlinux.org/yay.git
 	cd yay
 	makepkg -si --noconfirm
@@ -27,15 +27,15 @@ configure_mariadb() {
 	echo "Configuring MariaDB..."
 	sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 	
- 	# Can only enable if systemd is running
-  	sudo systemctl enable --now mariadb.service
+	# Can only enable if systemd is running
+	sudo systemctl enable --now mariadb.service
 }
 
 install_dotfiles() {
 	echo "Installing dotfiles..."
- 	git clone https://github.com/codemonkey76/dotfiles ~/dotfiles
+	git clone https://github.com/codemonkey76/dotfiles ~/dotfiles
 	cd ~/dotfiles
- 	stow .
+	stow .
 }
 
 install_bun() {
@@ -46,7 +46,6 @@ install_bun() {
 install_composer() {
 	echo "Installing Composer..."
 	php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-	php -r "if (hash_file('sha384', 'composer-setup.php') === 'edb40769019ccf227279e3bdd1f5b2e9950eb000c3233ee85148944e555d97be3ea4f40c3c2fe73b22f875385f6a5155') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 	php composer-setup.php
 	php -r "unlink('composer-setup.php');"
 	sudo mv composer.phar /usr/local/bin/composer
@@ -69,23 +68,23 @@ install_rust_toolchain() {
 
 setup_ssh() {
 	echo "Setting up SSH Key..."
- 	ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
+	ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
 }
 
 get_options() {
 	read -t 10 -p "Setup Github Credentials? [y/n]: " response < /dev/tty
 
-  	if [ -z "$response" ]; then
-   		echo "No response. Assuming 'no'..."
-     	else
-      		case "$response" in
+	if [ -z "$response" ]; then
+		echo "No response. Assuming 'no'..."
+	else
+		case "$response" in
 			[yY]|[yY][eE][sS])
-   				SETUP_GITHUB=true
-       				;;
-	   		*)
-      				SETUP_GITHUB=false
-	  			;;
-      		esac
+				SETUP_GITHUB=true
+				;;
+			*)
+				SETUP_GITHUB=false
+				;;
+		esac
 	fi
 }
 
@@ -122,10 +121,10 @@ main() {
 	install_rust_toolchain
 	install_dotfiles
 	switch_to_fish_shell
- 	setup_ssh
- 	if [ "$SETUP_GITHUB" = true ]; then
-  		setup_github
-    	fi
+	setup_ssh
+	if [ "$SETUP_GITHUB" = true ]; then
+		setup_github
+	fi
 }
 
 # Call the main function
