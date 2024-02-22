@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Exist on error and ensure errors in pipelines are caught
-cd ~
+# Exit on error and ensure errors in pipelines are caught
 set -eo pipefail
 
 # Update Packages
@@ -12,11 +11,12 @@ update_system() {
 
 install_pacman_packages() {
 	echo "Installing packages from official repositories..."
-	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli
+	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli go
 }
 
 install_yay() {
 	echo "Installing yay for AUR support..."
+ 	cd ~
 	git clone https://aur.archlinux.org/yay.git
 	cd yay
 	makepkg -si --noconfirm
@@ -36,7 +36,6 @@ install_dotfiles() {
  	git clone https://github.com/codemonkey76/dotfiles ~/dotfiles
 	cd ~/dotfiles
  	stow .
-	# Add your dotfiles installation commands here
 }
 
 install_bun() {
@@ -67,47 +66,52 @@ install_rust_toolchain() {
 	echo "Install rust stable toolchain..."
 	rustup default stable
 }
+
 setup_ssh() {
 	echo "Setting up SSH Key..."
  	ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
 }
 
-setup_github() {
-	echo "Setting up Github..."
- 	
- 	read -t 5 -p "Do you want to setup Github Credentials? (Press any key within 5 seconds to confirm) [y/n]: " response
+get_options() {
+	read -t 10 -p "Setup Github Credentials? [y/n]: " response < /dev/tty
 
   	if [ -z "$response" ]; then
    		echo "No response. Assuming 'no'..."
      	else
       		case "$response" in
 			[yY]|[yY][eE][sS])
-   				echo "Setting up Github credentials..."
-       				# Collect user's email and name
-	   			read -p "Enter your name: " name
-       				read -p "Enter your email: " email
-
-    				# Configure git with user's name and email
-				git config --global user.name "$name"
-    				git config --global user.email "$email"
-
- 				# Add SSH Key to github
-				if [ -f ~/.ssh/id_ed25519 ]; then
-    					echo "Adding SSH key to Github..."
-					gh auth login -s admin:public_key
-					gh ssh-key add ~/.ssh/id_ed25519 --type authentication
-     				fi
-	
-       				echo "Completed setup of Github credentials."
+   				SETUP_GITHUB=true
        				;;
 	   		*)
-      				echo "Skipping Github credentials setup."
+      				SETUP_GITHUB=false
 	  			;;
       		esac
 	fi
 }
 
+
+setup_github() {
+	echo "Setting up Github credentials..."
+	# Collect user's email and name
+	read -p "Enter your name: " name < /dev/tty
+	read -p "Enter your email: " email < /dev/tty
+
+	# Configure git with user's name and email
+	git config --global user.name "$name"
+	git config --global user.email "$email"
+
+	# Add SSH Key to github
+	if [ -f ~/.ssh/id_ed25519 ]; then
+		echo "Adding SSH key to Github..."
+		gh auth login -s admin:public_key
+		gh ssh-key add ~/.ssh/id_ed25519.pub --type authentication
+	fi
+	
+	echo "Completed setup of Github credentials."
+}
+
 main() {
+	get_options
 	update_system
 	install_pacman_packages
 	install_yay
@@ -119,8 +123,9 @@ main() {
 	install_dotfiles
 	switch_to_fish_shell
  	setup_ssh
- 	setup_github
- 	
+ 	if [ "$SETUP_GITHUB" = true ]; then
+  		setup_github
+    	fi
 }
 
 # Call the main function
