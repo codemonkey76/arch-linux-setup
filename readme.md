@@ -68,5 +68,5 @@ wsl -d <distro-name>
 Run the following command to setup your instance to my preferences.
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/codemonkey76/arch-linux-setup/main/setup.sh | sudo sh
+curl -sSL https://raw.githubusercontent.com/codemonkey76/arch-linux-setup/main/setup.sh | sh
 ```
