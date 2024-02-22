@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Exist on error and ensure errors in pipelines are caught
+cd ~
 set -eo pipefail
 
 # Update Packages
