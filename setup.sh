@@ -25,7 +25,9 @@ install_yay() {
 configure_mariadb() {
 	echo "Configuring MariaDB..."
 	sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-	sudo systemctl enable --now mariadb.service
+	
+ 	# Can only enable if systemd is running
+  	#sudo systemctl enable --now mariadb.service
 }
 
 install_dotfiles() {
