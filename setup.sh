@@ -33,6 +33,9 @@ configure_mariadb() {
 
 install_dotfiles() {
 	echo "Installing dotfiles..."
+ 	git clone https://github.com/codemonkey76/dotfiles ~/dotfiles
+	cd ~/dotfiles
+ 	stow .
 	# Add your dotfiles installation commands here
 }
 
