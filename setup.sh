@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Exist on error and ensure errors in pipelines are caught
+set -eo pipefail
+
 # Update Packages
 update_system() {
 	echo "Updating system..."
-	sudo pacman -Sy archlinux-keyring
 	sudo pacman -Syu --noconfirm
 }
 
