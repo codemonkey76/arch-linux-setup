@@ -12,7 +12,7 @@ update_system() {
 
 install_pacman_packages() {
 	echo "Installing packages from official repositories..."
-	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf
+	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli
 }
 
 install_yay() {
@@ -28,7 +28,7 @@ configure_mariadb() {
 	sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 	
  	# Can only enable if systemd is running
-  	#sudo systemctl enable --now mariadb.service
+  	sudo systemctl enable --now mariadb.service
 }
 
 install_dotfiles() {
@@ -60,12 +60,51 @@ install_composer_global_packages() {
 
 switch_to_fish_shell() {
 	echo "Setting fish shell as default..."
-	sudo ch -s /usr/bin/fish $(whoami)
+	sudo chsh -s /usr/bin/fish $(whoami)
 }
 
 install_rust_toolchain() {
 	echo "Install rust stable toolchain..."
 	rustup default stable
+}
+setup_ssh() {
+	echo "Setting up SSH Key..."
+ 	ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
+}
+
+setup_github() {
+	echo "Setting up Github..."
+ 	
+ 	read -t 5 -p "Do you want to setup Github Credentials? (Press any key within 5 seconds to confirm) [y/n]: " response
+
+  	if [ -z "$response" ]; then
+   		echo "No response. Assuming 'no'..."
+     	else
+      		case "$response" in
+			[yY]|[yY][eE][sS])
+   				echo "Setting up Github credentials..."
+       				# Collect user's email and name
+	   			read -p "Enter your name: " name
+       				read -p "Enter your email: " email
+
+    				# Configure git with user's name and email
+				git config --global user.name "$name"
+    				git config --global user.email "$email"
+
+ 				# Add SSH Key to github
+				if [ -f ~/.ssh/id_ed25519 ]; then
+    					echo "Adding SSH key to Github..."
+					gh auth login -s admin:public_key
+					gh ssh-key add ~/.ssh/id_ed25519 --type authentication
+     				fi
+	
+       				echo "Completed setup of Github credentials."
+       				;;
+	   		*)
+      				echo "Skipping Github credentials setup."
+	  			;;
+      		esac
+	fi
 }
 
 main() {
@@ -79,6 +118,9 @@ main() {
 	install_rust_toolchain
 	install_dotfiles
 	switch_to_fish_shell
+ 	setup_ssh
+ 	setup_github
+ 	
 }
 
 # Call the main function
