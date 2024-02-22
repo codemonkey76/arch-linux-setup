@@ -1,5 +1,14 @@
 # First install arch linux
 
+## Refresh the Arch Linux keyring.
+
+Refresh the Arch Linux keyring. This process involves refreshing the key database and ensuring that all necessary keys are trusted.
+
+```bash
+pacman-key --init
+pacman-key --populate archlinux
+```
+
 ## Create a new user
 use the `useradd` command to create a new user. Replace `yourusername` with your desired username. This command will create the users home directory, add them to the wheel group and set bash as their default shell.
 
@@ -59,5 +68,5 @@ wsl -d <distro-name>
 Run the following command to setup your instance to my preferences.
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/codemonkey76/arch-linux-setup/main/setup.sh | sh
+curl -sSL https://raw.githubusercontent.com/codemonkey76/arch-linux-setup/main/setup.sh | sudo sh
 ```
