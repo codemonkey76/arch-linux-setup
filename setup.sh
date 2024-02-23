@@ -29,6 +29,7 @@ configure_mariadb() {
 	
 	# Can only enable if systemd is running
 	sudo systemctl enable --now mariadb.service
+ 	echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '';" | sudo mariadb
 }
 
 install_dotfiles() {
