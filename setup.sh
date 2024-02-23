@@ -57,6 +57,10 @@ install_composer_global_packages() {
 	composer global require laravel/installer
 }
 
+install_go_packages() {
+	go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+ }
+
 switch_to_fish_shell() {
 	echo "Setting fish shell as default..."
 	sudo chsh -s /usr/bin/fish $(whoami)
@@ -127,6 +131,7 @@ main() {
 	install_composer_global_packages
  	setup_php_extensions
 	install_rust_toolchain
+ 	install_go_packages
 	install_dotfiles
 	switch_to_fish_shell
 	setup_ssh
