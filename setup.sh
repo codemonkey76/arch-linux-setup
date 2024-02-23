@@ -71,6 +71,10 @@ setup_ssh() {
 	ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519
 }
 
+setup_php_extensions() {
+	echo "extension=mysqli" | sudo tee /etc/php/conf.d/mysql.ini" > /dev/null
+ }
+ 
 get_options() {
 	read -t 10 -p "Setup Github Credentials? [y/n]: " response < /dev/tty
 
@@ -118,6 +122,7 @@ main() {
 	install_bun
 	install_composer
 	install_composer_global_packages
+ 	setup_php_extensions
 	install_rust_toolchain
 	install_dotfiles
 	switch_to_fish_shell
