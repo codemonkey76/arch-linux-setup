@@ -59,6 +59,7 @@ install_composer_global_packages() {
 
 install_go_packages() {
 	go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
+ 	go install github.com/fullstorydev/grpcui/cmd/grpcui@latest
  }
 
 switch_to_fish_shell() {
