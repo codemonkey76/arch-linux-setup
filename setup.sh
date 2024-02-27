@@ -11,7 +11,7 @@ update_system() {
 
 install_pacman_packages() {
 	echo "Installing packages from official repositories..."
-	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli go php-sqlite protobuf
+	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli go php-sqlite protobuf fd ripgrep lazygit
 }
 
 install_yay() {
@@ -81,6 +81,7 @@ setup_php_extensions() {
 	echo "extension=mysqli" | sudo tee /etc/php/conf.d/mysql.ini > /dev/null
  	echo "extension=pdo_mysql" | sudo tee -a /etc/php/conf.d/mysql.ini > /dev/null
  	echo "extension=pdo_sqlite" | sudo tee /etc/php/conf.d/sqlite.ini > /dev/null
+  	echo "extension=intl" | sudo tee /etc/php/conf.d/intl.ini > /dev/null
  }
  
 get_options() {
