@@ -11,7 +11,7 @@ update_system() {
 
 install_pacman_packages() {
 	echo "Installing packages from official repositories..."
-	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli go php-sqlite protobuf fd ripgrep lazygit redis php-redis
+	sudo pacman -S --noconfirm neovim rustup fish starship bat duf zellij exa git gitui zoxide php mariadb unzip base-devel stow fzf openssh github-cli go php-sqlite protobuf fd ripgrep lazygit redis php-redis php-sodium
 }
 
 install_yay() {
@@ -84,6 +84,7 @@ setup_php_extensions() {
   	echo "extension=intl" | sudo tee /etc/php/conf.d/intl.ini > /dev/null
    	echo "extension=redis" | sudo tee /etc/php/conf.d/redis.ini > /dev/null
     	echo -e "[igbinary]\nextension=igbinary.so" | sudo tee /etc/php/conf.d/igbinary.ini > /dev/null
+     	echo "extension=sodium" | sudo tee /etc/php/conf.d/sodium.ini > /dev/null
  }
  
 get_options() {
