@@ -104,6 +104,9 @@ get_options() {
 	fi
 }
 
+install_cargo_packages() {
+	cargo install atuin
+}
 
 setup_github() {
 	echo "Setting up Github credentials..."
