@@ -85,6 +85,7 @@ setup_php_extensions() {
    	echo "extension=redis" | sudo tee /etc/php/conf.d/redis.ini > /dev/null
     	echo -e "[igbinary]\nextension=igbinary.so" | sudo tee /etc/php/conf.d/igbinary.ini > /dev/null
      	echo "extension=sodium" | sudo tee /etc/php/conf.d/sodium.ini > /dev/null
+      	echo "extension=iconv" | sudo tee /etc/php/conf.d/iconv.ini > /dev/null
  }
  
 get_options() {
